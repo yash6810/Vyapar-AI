@@ -1,15 +1,15 @@
 Project Brief: Munimji - AI-Powered GST Business Assistant
 1. Project Overview
-Munimji is an interactive, single-page React application that serves as a functional prototype for an AI-powered financial assistant for Indian MSMEs. The core concept is to demonstrate how a user can manage their business finances (invoicing, expenses) through a simple, conversational interface that mimics WhatsApp. The application will feature a live integration with the OpenAI API, requiring users to input their own API key to activate the AI functionalities.
+Munimji is an interactive, single-page React application that serves as a functional prototype for an AI-powered financial assistant for Indian MSMEs. The core concept is to demonstrate how a user can manage their business finances (invoicing, expenses) through a simple, conversational interface that mimics WhatsApp. The application will feature a live integration with the Google Gemini API, requiring users to input their own API key to activate the AI functionalities.
 
 2. Core Features
-API Key Validation: A dedicated UI section for users to enter and validate their OpenAI API key. The app's core features remain disabled until a valid key is provided.
+API Key Validation: A dedicated UI section for users to enter and validate their Gemini API key (obtainable from Google AI Studio). The app's core features remain disabled until a valid key is provided.
 
 Conversational UI: A two-pane layout featuring a control panel and a simulated smartphone with a WhatsApp-like chat interface.
 
-AI-Powered Text Analysis: Use the OpenAI API (gpt-4o) to understand natural language commands for creating invoices, querying payments, and asking for help. The AI should return structured JSON.
+AI-Powered Text Analysis: Use the Google Gemini API (gemini-1.5-flash) to understand natural language commands for creating invoices, querying payments, and asking for help. The AI should return structured JSON.
 
-AI-Powered Image Analysis: Use the OpenAI Vision API (gpt-4o) to analyze images of receipts, extract key information (vendor, amount, category), and return structured JSON.
+AI-Powered Image Analysis: Use the Google Gemini API (gemini-1.5-flash) to analyze images of receipts, extract key information (vendor, amount, category), and return structured JSON.
 
 Dynamic Chat Flow: The chat interface should display user messages, bot responses, image uploads, and a "typing" indicator to simulate a real conversation.
 
@@ -24,12 +24,14 @@ Icons: Lucide React
 
 Language: JavaScript (ES6+)
 
-API: OpenAI API (v1 Completions Endpoint)
+API: Google Gemini API (v1beta)
 
 4. File Structure
 The entire application should be built within the standard create-react-app structure. The primary logic will be contained within src/App.js.
 
 munimji-app/
+├── docs/
+│   └── Project Brief Munimji - AI-Powered.md
 ├── public/
 │   └── index.html
 ├── src/
@@ -50,7 +52,7 @@ inputValue: The current text in the chat input field.
 
 isBotTyping: A boolean to show/hide the typing indicator.
 
-apiKey, tempApiKey: Strings to manage the OpenAI API key.
+apiKey, tempApiKey: Strings to manage the Gemini API key.
 
 isApiValid: A state to track if the provided API key is valid (null, true, or false).
 
@@ -88,7 +90,7 @@ A "typing" indicator that appears when isBotTyping is true.
 A chat input field and a "Send" button at the bottom.
 
 Core Logic (Functions)
-validateApiKey(key): An async function that makes a test call to an OpenAI endpoint (e.g., /v1/models) to verify the key. Updates the isApiValid and apiKey states based on the response.
+validateApiKey(key): An async function that makes a test call to a Gemini endpoint to verify the key. Updates the isApiValid and apiKey states based on the response.
 
 handleIncomingMessage(message): The main async function that orchestrates the AI interaction.
 
@@ -96,11 +98,11 @@ It should first check if a valid apiKey exists.
 
 It sets isBotTyping to true.
 
-If the message is text: It constructs a payload for the OpenAI Chat Completions API with a detailed system prompt instructing gpt-4o to act as "Munimji" and return a specific JSON object based on the user's intent (CREATE_INVOICE, QUERY_PAYMENTS, etc.).
+If the message is text: It constructs a payload for the Gemini API with a detailed system prompt instructing the model to act as "Munimji" and return a specific JSON object based on the user's intent (CREATE_INVOICE, QUERY_PAYMENTS, etc.).
 
-If the message is an image: It first converts the image URL to Base64. Then, it constructs a payload for the gpt-4o vision model with a system prompt instructing it to analyze the receipt and return a JSON object with vendor, amount, and category.
+If the message is an image: It first converts the image URL to Base64. Then, it constructs a payload for the Gemini API vision model with a system prompt instructing it to analyze the receipt and return a JSON object with vendor, amount, and category.
 
-It makes the fetch call to the OpenAI API.
+It makes the fetch call to the Gemini API.
 
 It parses the JSON response from the AI and updates the messages state with the bot's reply.
 
